@@ -1,0 +1,45 @@
+
+Algoritmos Geneticos
+
+Dados los digitos del 0 al 9 y los operadores +,-,* y /, encuentre una secuencia que representara un numero dado. Los operatdores se aplican secuencialmente de izquierda a derecha como sean leidos.
+
+Ejmp
+23 = 6+5*4/2+1
+75.5 = 5/2+9*7-5
+
+
+Poblacion inicial
+ Esta conformada por individuos (cromosomas)
+ - Como determinar el numero de individuos?
+ - Que representa un individuo?
+
+
+ - Como codificar el individuo? Un individuo lo conforman genes
+
+ - Buscar una funcion que represente la adaptabilidad de un ind.
+
+
+
+
+
+
+PASOS
+
+1. Poblacion inicial
+2. Calcular su adaptabilidad
+3. Condicion de parada
+
+IF
+	A. Un solo individuo soluciona el problema
+OR
+	B. Alcanzo un numero maximo de generaciones
+(
+	PARAR
+
+)
+else
+(
+SELECCION
+
+
+)
