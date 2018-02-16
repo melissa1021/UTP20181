@@ -4,7 +4,7 @@ import zmq
 import sys
 import os
 
-tamano_trozo = 1024
+tamano_trozo = 1024*1024
 
 def loadFiles(path):
     files = {}
