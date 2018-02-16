@@ -1,8 +1,10 @@
-
-
+from pathlib import Path
+import math
 import zmq
 import sys
 import os
+
+tamano_trozo = 1024
 
 def loadFiles(path):
     files = {}
@@ -12,6 +14,11 @@ def loadFiles(path):
         print("Loading {}".format(filename))
         files[filename] = file
     return files
+
+def partes(localPath):
+    #Retorna el tamano el megas
+    b = os.path.getsize(localPath)
+    return math.ceil(b/(1024*1024))
 
 def main():
     if len(sys.argv) != 3:
@@ -37,6 +44,20 @@ def main():
             with open(sys.argv[2]+msg["file"],"rb") as input:
 	            data = input.read()
 	            s.send(data)
+        elif msg["op"] == "partes":
+            data = partes(sys.argv[2]+msg["file"])
+            s.send_json({"partes": data})
+        elif  msg["op"] == "parteN":
+            with open(sys.argv[2]+msg["file"],"rb") as input:
+                if nmsg["numP"] == "0":
+                        data = input.read(tamano_trozo)
+                else:
+                    posicion = sys.argv[5]*tamano_trozo
+                    input.seek(posicion)
+                    data = input.read(tamano_trozo)
+                    
+                s.send(data)
+            
 
 if __name__ == "__main__":
     main()
