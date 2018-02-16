@@ -3,7 +3,7 @@ import sys
 import os
 
 def main():
-    if len(sys.argv) != 5:
+    if len(sys.argv) < 2:
         print("Error calling the program")
         exit()
 
@@ -11,6 +11,7 @@ def main():
     serverPort = sys.argv[2]
     operation = sys.argv[3]
     filename = sys.argv[4]
+    parteDescargar = sys.argv[5]
 
     context = zmq.Context()
     s = context.socket(zmq.REQ)
@@ -31,9 +32,9 @@ def main():
             files = s.recv_json()
             print(files)
     elif operation == "parteN":
-            s.send_json({"op":"parteN", "numP":sys.argv[5]})
+            s.send_json({"op":"parteN", "file":filename, "numP":parteDescargar})
             file = s.recv()
-            with open("down-"+ operation, "wb") as output:
+            with open("parte "+parteDescargar, "wb") as output:
                 output.write(file)        
 
 

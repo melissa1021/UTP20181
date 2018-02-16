@@ -49,10 +49,10 @@ def main():
             s.send_json({"partes": data})
         elif  msg["op"] == "parteN":
             with open(sys.argv[2]+msg["file"],"rb") as input:
-                if nmsg["numP"] == "0":
-                        data = input.read(tamano_trozo)
+                if msg["numP"] == "0":
+                    data = input.read(tamano_trozo)
                 else:
-                    posicion = sys.argv[5]*tamano_trozo
+                    posicion = int(msg["numP"])*tamano_trozo
                     input.seek(posicion)
                     data = input.read(tamano_trozo)
                     
