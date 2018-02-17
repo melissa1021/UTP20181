@@ -4,14 +4,15 @@ import os
 
 tamanoTrozo = (1024*1024)
 
-def reconstruirArchivo(pr_Listado):
-    # Archivo Final
-    with open("archivoReconstruido","wb") as archivoFinal:
-        contador = 0
-        for trozo in pr_Listado:
-            archivoFinal[contador*tamanoTrozo].write = open(trozo,"r")
-    
-    #archivoFinal.write(archivoFinal)
+#def reconstruirArchivo(pr_Listado):
+ #   # Archivo Final
+  #  x = open ("archivoReconstruido.bat", 'w') 
+   # x.write('copy /b "'+ archivoReconstruido + '.0" "' + archivoReconstruido + '"\n')
+   # z = 1
+   # while z<i:
+   #     x.write('copy /b "'+ archivoReconstruido +'"+"'+ archivoReconstruido +'.'+ repr(z)+ '"\n')
+   #     z = z + 1
+   # x.close()
 
 
 def main():
@@ -57,7 +58,6 @@ def main():
                     output.write(file) 
                     listadoDescarga.append("{} part{}".format(filename, x))
 
-            
 
     elif operation == "partes":
             s.send_json({"op":"partes", "file":filename})
