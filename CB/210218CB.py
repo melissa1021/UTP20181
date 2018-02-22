@@ -49,6 +49,7 @@ def main():
     pop = toolbox.population(n = 50)
     hof = tools.HallOfFame(1)
     stats = tools.Statistics(lambda ind: ind.fitness.values)
+    
     stats.register('awg',np.mean)
     stats.register('std',np.std)
 
