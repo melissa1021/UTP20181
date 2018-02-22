@@ -33,9 +33,6 @@ def main():
                 output.write(file)
 
     elif operation == "descargapartes":
-
-            listadoDescarga = []
-
             s.send_json({"op":"partes", "file":filename})
             files = s.recv_json()
             cantidad = files["partes"]
