@@ -3,6 +3,7 @@ import math
 import zmq
 import sys
 import os
+import md5
 
 tamano_trozo = 1024*1024
 
@@ -55,9 +56,8 @@ def main():
                     posicion = int(msg["numP"])*tamano_trozo
                     input.seek(posicion)
                     data = input.read(tamano_trozo)
-                    
+
                 s.send(data)
-            
 
 if __name__ == "__main__":
     main()

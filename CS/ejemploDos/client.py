@@ -1,19 +1,9 @@
 import zmq
 import sys
 import os
+import md5
 
 tamanoTrozo = (1024*1024)
-
-#def reconstruirArchivo(pr_Listado):
- #   # Archivo Final
-  #  x = open ("archivoReconstruido.bat", 'w') 
-   # x.write('copy /b "'+ archivoReconstruido + '.0" "' + archivoReconstruido + '"\n')
-   # z = 1
-   # while z<i:
-   #     x.write('copy /b "'+ archivoReconstruido +'"+"'+ archivoReconstruido +'.'+ repr(z)+ '"\n')
-   #     z = z + 1
-   # x.close()
-
 
 def main():
     if len(sys.argv) < 2:
@@ -24,9 +14,8 @@ def main():
     serverPort = sys.argv[2]
     operation = sys.argv[3]
     filename = sys.argv[4]
-    parteDescargar = sys.argv[5]
+    #parteDescargar = 0
 
-    
     context = zmq.Context()
     s = context.socket(zmq.REQ)
     s.connect("tcp://{}:{}".format(serverIp, serverPort))
@@ -46,18 +35,17 @@ def main():
     elif operation == "descargapartes":
 
             listadoDescarga = []
-            
+
             s.send_json({"op":"partes", "file":filename})
             files = s.recv_json()
             cantidad = files["partes"]
-            
+            destino = "final" + filename
+
             for x in range(0, cantidad):
                 s.send_json({"op":"parteN", "file":filename, "numP":x})
                 file = s.recv()
-                with open("{} part{}".format(filename, x), "wb") as output:
-                    output.write(file) 
-                    listadoDescarga.append("{} part{}".format(filename, x))
-
+                with open(destino, "ab") as dest:
+                    dest.write(file)
 
     elif operation == "partes":
             s.send_json({"op":"partes", "file":filename})
@@ -68,7 +56,7 @@ def main():
             s.send_json({"op":"parteN", "file":filename, "numP":parteDescargar})
             file = s.recv()
             with open("{} part{}".format(filename, parteDescargar), "wb") as output:
-                output.write(file)        
+                output.write(file)
 
 
 if __name__ == '__main__':
