@@ -4,7 +4,6 @@ import zmq
 import sys
 import os
 
-
 tamano_trozo = 1024*1024
 conectados = {}
 
@@ -70,14 +69,23 @@ def main():
             print(conectados.keys())
             s.send_json({"clientes": str(conectados.keys()), "status": 1})
 
-        elif opcion == "setMensaje":
+        elif opcion == "sendMensaje":
             destinatario = conectados.get(msg["usuario"])
 
             mensajeDestinatario = msg["mensaje"]
-            print("Enviando mensaje "+mensajeDestinatario)
-            destinatario.send_json({"mensaje": msg["remitente"]+" dice :"+mensajeDestinatario})
+            print(msg["remitente"]+" dice: "+mensajeDestinatario)
+            destinatario.send_json({"mensaje": msg["remitente"]+" dice :"+mensajeDestinatario, "tipo" : "txt"})
             s.send_json({"status": 1})
-            
+            destinatario.recv_json() 
+
+        elif opcion == "sendAudio":
+            destinatario = conectados.get(msg["usuario"])
+
+            mensajeDestinatario = msg["mensaje"]
+            destinatario.send_json({"remitente" : msg["remitente"], "mensaje": mensajeDestinatario, "tipo" : "audio"})
+            s.send_json({"status": 1})
+            destinatario.recv_json() 
+
         elif opcion == "desconectar":
 
             # Para no saturar el servidor y dar la impresion de concurrencia, se pediran los archivos por trozos, 
