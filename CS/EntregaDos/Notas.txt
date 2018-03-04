@@ -1,0 +1,21 @@
+
+
+
+control de errores
+si el cliente no pone un numero peta
+si el nombre no existe peta
+que no me pueda escribir a mismo
+
+que obligue a loguin para cualquier otra opcion'
+
+que muestre quien soy
+que mantenga la charla
+
+no pasar como json por que la voz queda raro
+
+mandarlo con el multipart
+como binario
+
+
+
+
