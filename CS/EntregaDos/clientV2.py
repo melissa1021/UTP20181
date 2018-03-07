@@ -30,14 +30,12 @@ def main():
     clientSocket = context.socket(zmq.REP)
 
     poller = zmq.Poller()
-    poller.register(serverSocket, zmq.POLLIN)
+    poller.register(clientSocket, zmq.POLLIN)
     poller.register(sys.stdin, zmq.POLLIN)
-
+    
     def menu(pr_Login):
-
+       
         os.system("clear")
-        
-        print("Selecciona una opcion")
         if not pr_Login:
             print("\t 1.Login")
         else:
@@ -115,16 +113,30 @@ def main():
 
     def menuUsuario(Login):
 
+        '''
+        #logueo inicial automatico quitar solo es para pruebas
+        serverSocket.send_json({"op":"login", "nombre":'oz', "ip":'localhost', "puerto": "1712"})
+        respuesta = serverSocket.recv_json() 
+        
+        if respuesta["status"] == 1:
+            print("Ahora estas conectado..")
+            Login = True
+        '''
+
         while True:
             
             menu(Login)
-
+            
+            print("inicio")
             avisoSistema = dict(poller.poll())
+            print("Paso")
+            tecladoOk = avisoSistema.get(sys.stdin.fileno(),False)
+            print(tecladoOk)
 
-            print(avisoSistema)
             if clientSocket in avisoSistema:               
+                print("entro a sockets")
                 msg = clientSocket.recv_json()
-
+                
                 if msg["tipo"] == "txt":   
                     mensajes.append(msg["mensaje"])
                 else:
@@ -132,14 +144,10 @@ def main():
                     reproducirSonido(msg["mensaje"])
 
                 clientSocket.send_json({"status":1})
-
-            if sys.stdin.fileno in avisoSistema: 
-                print("entro a")
-                print("\n")
-              
-                opcionMenu = input("vbla bla bla ")
-                print(opcionMenu)
-                print(opcionMenu)
+            
+            if sys.stdin.fileno() in avisoSistema: 
+                               
+                opcionMenu = input("Ingrese la opcion")
 
                 if opcionMenu == 1:
                     if Login:
