@@ -45,7 +45,7 @@ def main():
             print("\t 9. Salir")
 
         print("\n")
-        print(mensajes)
+        print("\t"+mensajes+"\n")
         print("\t Ingresa una opcion..")
 
     def reproducirSonido(pr_Audio):
@@ -151,30 +151,38 @@ def main():
                     respuesta = serverSocket.recv_json()  
 
                     print("Usuarios conectados...")
-                    print(respuesta["clientes"])
+                    listadoClientes = respuesta["clientes"]
+                    print(listadoClientes)
                 
                     usuario = input("Ingrese el nombre del usuario ")
-                    mensaje = input('Escriba el mensaje a enviar ')
-                    # Validar si escribio algo en el mensaje
-                    serverSocket.send_json({"op":"sendMensaje","usuario":usuario,"remitente" : nombre, "mensaje":mensaje})
-                    respuesta = serverSocket.recv_json() 
+                    if usuario in listadoClientes:
+                        mensaje = input('Escriba el mensaje a enviar ')
+                        # Validar si escribio algo en el mensaje
+                        serverSocket.send_json({"op":"sendMensaje","usuario":usuario,"remitente" : nombre, "mensaje":mensaje})
+                        respuesta = serverSocket.recv_json() 
+                    else:
+                        print("Por favor elije un usuario valido...")
+                        input("Presiona cualquier tecla para continuar...")
 
                 elif opcionMenu == 4:
                     serverSocket.send_json({"op":"getClientes"})
                     respuesta = serverSocket.recv_json()  
 
                     print("Usuarios conectados...")
-                    print(respuesta["clientes"])
-
-                    fechaHora = datetime.datetime.now()
+                    listadoClientes = respuesta["clientes"]
+                    print(listadoClientes)
                     usuario = input("Ingrese el nombre del usuario ")
-                    mensaje = grabarAudio(nombre+"_a_"+usuario+str(fechaHora.month)+str(fechaHora.hour)+str(fechaHora.second))
-            
-                    #grabarAudio("audioPrueba")
-                    # Validar si escribio algo en el mensaje
-                    serverSocket.send_json({"op":"sendAudio","usuario":usuario,"remitente" : nombre, "mensaje":mensaje})
-                    respuesta = serverSocket.recv_json() 
-                    
+
+                    if usuario in listadoClientes:
+
+                        mensaje = grabarAudio()
+                
+                        serverSocket.send("sendAudio-"+nombre+"-"+mensaje})
+                        respuesta = serverSocket.recv() 
+                    else:
+                        print("Por favor elije un usuario valido...")
+                        input("Presiona cualquier tecla para continuar...")
+                   
                 elif opcionMenu == 5:
                     print(opcionMenu)
                     
