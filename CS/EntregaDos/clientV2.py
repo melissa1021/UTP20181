@@ -174,11 +174,10 @@ def main():
                     usuario = input("Ingrese el nombre del usuario ")
 
                     if usuario in listadoClientes:
-
-                        mensaje = grabarAudio()
-                
-                        serverSocket.send("sendAudio-"+nombre+"-"+mensaje})
-                        respuesta = serverSocket.recv() 
+                        mensaje = grabarAudio()            
+                        serverSocket.send(mensaje)
+                        #respuesta = serverSocket.recv() 
+                        
                     else:
                         print("Por favor elije un usuario valido...")
                         input("Presiona cualquier tecla para continuar...")
